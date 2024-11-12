@@ -1,9 +1,9 @@
-import { Product } from '@/lib/models/ProductModel'
+import { Products } from '@/lib/models/ProductModel'
 import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 
-const ProductItem = ({ product }: { product: Product }) => {
+const ProductItem = ({ product }: { product: Products }) => {
   return (
     <div className="card bg-base-300 shadow-xl mb-4">
       <figure>
@@ -17,7 +17,7 @@ const ProductItem = ({ product }: { product: Product }) => {
           />
         </Link>
         <div className="card-body">
-          <Link href={`/product.slug`}>
+          <Link href={`/product/${product.slug}`}>
             <h2 className="card-title font-normal">{product.name}</h2>
           </Link>
           <p className="mb-2">{product.name}</p>

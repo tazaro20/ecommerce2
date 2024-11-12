@@ -1,9 +1,9 @@
-export type Product = {
-  _id: string
+export type Products = {
+  _id?: string
   name: string
   slug: string
   image: string
-  banner: string
+  banner?: string
   price: number
   brand: string
   description: string
