@@ -25,9 +25,9 @@ export default function CartDetails() {
           Cart is empty. <Link href={'/'}>Go shopping</Link>
         </div>
       ) : (
-        <div className="grid md:grid-cols-4 md:gap-4">
+        <div className="grid grid-cols-1 gap-1 md:grid-cols-4 md:gap-4">
           <div className="overflow-x-auto md:col-span-3">
-            <table className="table-auto w-full">
+            <table className="table table-auto w-full text-center items-center">
               <thead>
                 <tr>
                   <th>Product</th>
@@ -37,7 +37,7 @@ export default function CartDetails() {
               </thead>
               <tbody>
                 {items.map((item) => (
-                  <tr key={item.slug}>
+                  <tr key={item.name}>
                     <td>
                       <Link href={`/product/${item.slug}`}>
                         <Image
