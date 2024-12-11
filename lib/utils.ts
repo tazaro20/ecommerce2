@@ -8,5 +8,14 @@ export function convertDocToObj(doc: any) {
       _id: doc._id.toString(),
     };
   }
+
+  export const formatNumber = (x: number) => {
+    return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
+  }
+  
+  export const formatId = (x: string) => {
+    return `..${x.substring(20, 24)}`
+  }
+  
   
   
