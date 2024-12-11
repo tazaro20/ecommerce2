@@ -9,6 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@paypal/react-paypal-js": "^8.7.0",
     "@types/mongoose": "^5.11.97",
     "bcryptjs": "^2.4.3",
     "eslint-plugin-react-hooks": "^5.1.0-rc-7283a213-20241206",
@@ -21,6 +22,7 @@
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.54.0",
     "react-hot-toast": "^2.4.1",
+    "swr": "^2.2.5",
     "zustand": "^5.0.1"
   },
   "devDependencies": {

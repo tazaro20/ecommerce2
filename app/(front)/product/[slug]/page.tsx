@@ -9,7 +9,8 @@ export async function generateMetadata({
 }: {
   params: { slug: string }
 }) {
-  const product = await productService.getBySlug(params.slug)
+  const slug = params.slug
+  const product = await productService.getBySlug(slug)
   if (!product) {
     return { title: 'Product not found' }
   }
@@ -24,7 +25,8 @@ export default async function ProductDetails({
 }: {
   params: { slug: string }
 }) {
-  const product = await productService.getBySlug(params.slug)
+  const slug = params.slug
+  const product = await productService.getBySlug(slug)
   if (!product) {
     return <div>Product not found</div>
   }
