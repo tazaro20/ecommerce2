@@ -3,12 +3,10 @@ import localFont from 'next/font/local'
 import './globals.css'
 import Header from '@/components/header/Header'
 import Providers from '@/components/Providers'
+import DrawerButton from '@/components/DrawerButton'
+import Sidebar from '@/components/Sidebar'
 
-const geistSans = localFont({
-  src: './fonts/GeistVF.woff',
-  variable: '--font-geist-sans',
-  weight: '100 900',
-})
+
 const geistMono = localFont({
   src: './fonts/GeistMonoVF.woff',
   variable: '--font-geist-mono',
@@ -26,20 +24,35 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <Providers>
-          <div className="min-h-screen flex flex-col">
-            <Header />
-            {children}
-            <footer className="footer footer-center p-4 bg-base-300 text-base-content">
-              <p>Copyright © 2023 Alll reserved by Tazaro ivan</p>
-            </footer>
-          </div>
-        </Providers>
-      </body>
-    </html>
-  )
+      <html lang="en">
+        <body className={geistMono.className}>
+          <Providers>
+            <div className="drawer">
+              <DrawerButton />
+              <div className="drawer-content">
+                {/* Page content here */}
+                <div className="min-h-screen flex flex-col">
+                  <Header />
+                  {children}
+                  <footer className="footer footer-center p-4 bg-base-300 text-base-content">
+                    <p>
+                      Copyright © 2023 - All right reserved by{' '}
+                      {process.env.NEXT_PUBLIC_APP_NAME || 'Next Shop'}
+                    </p>
+                  </footer>
+                </div>
+              </div>
+              <div className="drawer-side">
+                <label
+                  htmlFor="my-drawer"
+                  aria-label="close sidebar"
+                  className="drawer-overlay"
+                ></label>
+                <Sidebar />
+              </div>
+            </div>
+          </Providers>
+        </body>
+      </html>
+    )
 }

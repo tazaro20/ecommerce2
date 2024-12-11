@@ -17,8 +17,8 @@ export default function OrderDetails({
 }) {
   const { trigger: deliverOrder, isMutating: isDelivering } = useSWRMutation(
     `/api/orders/${orderId}`,
-    async () => {
-      const res = await fetch(`/api/admin/orders/${orderId}/deliver`, {
+    async (url) => {
+      const res = await fetch(`${url}/deliver`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',

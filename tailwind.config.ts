@@ -1,19 +1,33 @@
-import type { Config } from "tailwindcss";
+import type { Config } from 'tailwindcss'
+import daisyui from 'daisyui'
+import daisyuiThemes from 'daisyui/src/theming/themes'
 
-export default {
+const config: Config = {
   content: [
-    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
-    "./components/**/*.{js,ts,jsx,tsx,mdx}",
-    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    './pages/**/*.{js,ts,jsx,tsx,mdx}',
+    './components/**/*.{js,ts,jsx,tsx,mdx}',
+    './app/**/*.{js,ts,jsx,tsx,mdx}',
   ],
-  theme: {
-    extend: {
-      colors: {
-        background: "var(--background)",
-        foreground: "var(--foreground)",
+  plugins: [daisyui],
+  daisyui: {
+    themes: [
+      {
+        light: {
+          ...(daisyuiThemes['light'] as Record<string, unknown>),
+          primary: '#fbbf24',
+        },
+        dark: {
+          ...(daisyuiThemes['dark'] as Record<string, unknown>),
+          primary: '#fbbf24',
+          '.toaster-con': {
+            'background-color': 'black',
+            color: 'white',
+          },
+        },
       },
-    },
+    ],
   },
-  // eslint-disable-next-line @typescript-eslint/no-require-imports
-  plugins: [ require('daisyui'),],
-} satisfies Config;
+  darkMode: ['class', '["dark"]'],
+}
+
+export default config

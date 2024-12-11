@@ -14,8 +14,8 @@ export function convertDocToObj(doc: any) {
   }
   
   export const formatId = (x: string) => {
-    return `..${x.substring(20, 24)}`
-  }
+    return x.length > 20 ? `..${x.substring(20, 24)}` : x;
+  };
   
   
   
