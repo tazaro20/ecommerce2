@@ -11,8 +11,12 @@ const AdminLayout = ({
   activeItem: string;
   children: React.ReactNode;
 }) => {
-  const { data: session } = useSession();
+  const { data: session, status } = useSession();
   
+  if (status === "loading") {
+    return <div>Loading...</div>;
+  }
+
   if (!session || !session.user?.isAdmin) {
     return (
       <div className="relative flex flex-grow p-4">

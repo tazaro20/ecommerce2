@@ -1,87 +1,74 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
+/* eslint-disable @typescript-eslint/no-explicit-any */
 'use client'
+import { useRouter } from 'next/navigation'
+import useSWR from 'swr'
+import Link from 'next/link'
 
-   import { User } from '@/lib/models/UserModel'
-   import { formatId } from '@/lib/utils'
-   import Link from 'next/link'
-   import { useRouter } from 'next/navigation'
-   import toast from 'react-hot-toast'
-   import useSWR from 'swr'
-   import useSWRMutation from 'swr/mutation'
+export default function Users() {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const router = useRouter()
+  const { data: users, error, mutate } = useSWR('/api/admin/users')
 
-   export default function Users() {
-     const { data: users, error } = useSWR(`/api/admin/users`)
-     const router = useRouter()
+  if (error) return <div>Failed to load</div>
+  if (!users) return <div>Loading...</div>
 
-     const { trigger: deleteUser } = useSWRMutation(
-       `/api/admin/users`,
-       async (url, { arg }: { arg: { userId: string } }) => {
-         const toastId = toast.loading('Deleting user...')
-         const res = await fetch(`${url}/${arg.userId}`, {
-           method: 'DELETE',
-           headers: {
-             'Content-Type': 'application/json',
-           },
-         })
-         const data = await res.json()
-         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-         res.ok
-           ? toast.success('User deleted successfully', {
-               id: toastId,
-             })
-           : toast.error(data.message, {
-               id: toastId,
-             })
-       }
-     )
-     if (error) return 'An error has occurred.'
-     if (!users) return 'Loading...'
+  const deleteUser = async (userId: string) => {
+    if (confirm('Are you sure you want to delete this user?')) {
+      const res = await fetch(`/api/admin/users/${userId}`, {
+        method: 'DELETE',
+      })
+      if (res.ok) {
+        mutate()
+      } else {
+        alert('Failed to delete user')
+      }
+    }
+  }
 
-     return (
-       <div>
-         <h1 className="py-4 text-2xl">Users</h1>
-
-         <div className="overflow-x-auto">
-           <table className="table table-zebra">
-             <thead>
-               <tr>
-                 <th>id</th>
-                 <th>name</th>
-                 <th>email</th>
-                 <th>admin</th>
-                 <th>actions</th>
-               </tr>
-             </thead>
-             <tbody>
-               {users.map((user: User) => (
-                 <tr key={user._id}>
-                   <td>{formatId(user._id)}</td>
-                   <td>{user.name}</td>
-                   <td>{user.email}</td>
-                   <td>{user.isAdmin ? 'YES' : 'NO'}</td>
-
-                   <td>
-                     <Link
-                       href={`/admin/users/${user._id}`}
-                       type="button"
-                       className="btn btn-ghost btn-sm"
-                     >
-                       Edit
-                     </Link>
-                     &nbsp;
-                     <button
-                       onClick={() => deleteUser({ userId: user._id })}
-                       type="button"
-                       className="btn btn-ghost btn-sm"
-                     >
-                       Delete
-                     </button>
-                   </td>
-                 </tr>
-               ))}
-             </tbody>
-           </table>
-         </div>
-       </div>
-     )
-   }
+  return (
+    <div>
+       <div className="flex justify-between items-center mt-4">
+      <h1 className="text-2xl mb-4">Users</h1>
+      <Link href="/admin/users/create" className="btn btn-primary ml-auto mt-4">
+        Create User
+      </Link>
+      </div>
+      <table className="table mt-4">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Admin</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.map((user: any) => (
+            <tr key={user._id}>
+              <td>{user._id}</td>
+              <td>{user.name}</td>
+              <td>{user.email}</td>
+              <td>{user.isAdmin ? 'Yes' : 'No'}</td>
+              <td>
+                <Link
+                  href={`/admin/users/${user._id}`}
+                  className="btn btn-xs mr-2"
+                >
+                  Edit
+                </Link>
+                <button
+                  onClick={() => deleteUser(user._id)}
+                  className="btn btn-xs btn-error"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+     
+    </div>
+  )
+}

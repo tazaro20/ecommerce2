@@ -1,20 +1,10 @@
 import AdminLayout from '@/components/admin/AdminLayout'
-import Form from './Form'
+import UserEditForm from './Form'
 
-export function generateMetadata({ params }: { params: { id: string } }) {
-  return {
-    title: `Edit User ${params.id}`,
-  }
-}
-
-export default function OrderHistory({
-  params,
-}: {
-  params: { id: string }
-}) {
+export default function EditUserPage({ params }: { params: { id: string } }) {
   return (
-    <AdminLayout activeItem="products">
-      <Form userId={params.id} />
+    <AdminLayout activeItem="users">
+      <UserEditForm userId={params.id} />
     </AdminLayout>
   )
 }
