@@ -6,7 +6,7 @@ import { Rating } from './Rating'
 
 const ProductItem = ({ product }: { product: Product }) => {
   return (
-    <div className="card bg-base-300 shadow-xl mb-4 lg:w-64">
+    <div className="card bg-base-300 shadow-lg mb-4 lg:w-64 hover:shadow-xl transition-shadow duration-300">
         <Link href={`/product/${product.slug}`}>
           <Image
             src={product.image}

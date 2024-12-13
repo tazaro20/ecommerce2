@@ -23,6 +23,7 @@ const Form = () => {
       country: '',
     },
   })
+
   useEffect(() => {
     setValue('fullName', shippingAddress.fullName)
     setValue('address', shippingAddress.address)
@@ -47,8 +48,8 @@ const Form = () => {
     required?: boolean
     pattern?: ValidationRule<RegExp>
   }) => (
-    <div className="my-2">
-      <label className="label" htmlFor={id}>
+    <div className="my-4">
+      <label className="label font-medium text-gray-700" htmlFor={id}>
         {name}
       </label>
       <input
@@ -58,10 +59,10 @@ const Form = () => {
           required: required && `${name} is required`,
           pattern,
         })}
-        className="input input-bordered w-full max-w-sm"
+        className="input input-bordered w-full focus:outline-none focus:ring focus:ring-primary-300"
       />
       {errors[id]?.message && (
-        <div className="text-error">{errors[id].message}</div>
+        <p className="text-sm text-red-500 mt-1">{errors[id].message}</p>
       )}
     </div>
   )
@@ -69,10 +70,10 @@ const Form = () => {
   return (
     <div>
       <CheckoutSteps current={1} />
-      <div className="max-w-sm mx-auto card bg-base-300 my-4">
-        <div className="card-body">
-          <h1 className="card-title">Shipping Address</h1>
-          <form onSubmit={handleSubmit(formSubmit)}>
+      <div className="max-w-lg mx-auto my-10 card bg-base-100 shadow-md border border-gray-200">
+        <div className="card-body p-6">
+          <h1 className="card-title text-xl font-semibold text-gray-800 text-center">Shipping Address</h1>
+          <form onSubmit={handleSubmit(formSubmit)} className="space-y-6">
             <FormInput id="fullName" name="Full Name" required />
             <FormInput id="address" name="Address" required />
             <FormInput id="city" name="City" required />
@@ -80,17 +81,17 @@ const Form = () => {
               id="postalCode"
               name="Postal Code"
               required
-               pattern={/^[A-Za-z0-9\s]{3,10}$/}
+              pattern={/^[A-Za-z0-9\s]{3,10}$/}
             />
             <FormInput id="country" name="Country" required />
             <div className="flex justify-end">
               <button
                 type="submit"
-                className="btn btn-primary"
+                className="btn btn-primary py-2 px-6 text-lg font-semibold"
                 disabled={isSubmitting}
               >
                 {isSubmitting && (
-                  <span className="loading loading-spinner"></span>
+                  <span className="loading loading-spinner mr-2"></span>
                 )}
                 Next
               </button>

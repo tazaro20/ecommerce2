@@ -1,6 +1,5 @@
 import type { Config } from 'tailwindcss'
 import daisyui from 'daisyui'
-import daisyuiThemes from 'daisyui/src/theming/themes'
 
 const config: Config = {
   content: [
@@ -13,21 +12,31 @@ const config: Config = {
     themes: [
       {
         light: {
-          ...(daisyuiThemes['light'] as Record<string, unknown>),
-          primary: '#fbbf24',
+          "primary": "#0ea5e9",
+          "secondary": "#7dd3fc",
+          "accent": "#37CDBE",
+          "neutral": "#3D4451",
+          "base-100": "#f0f9ff",
+          "info": "#3ABFF8",
+          "success": "#36D399",
+          "warning": "#FBBD23",
+          "error": "#F87272",
         },
         dark: {
-          ...(daisyuiThemes['dark'] as Record<string, unknown>),
-          primary: '#fbbf24',
-          '.toaster-con': {
-            'background-color': 'black',
-            color: 'white',
-          },
+          "primary": "#0ea5e9",
+          "secondary": "#7dd3fc",
+          "accent": "#37CDBE",
+          "neutral": "#3D4451",
+          "base-100": "#1e293b",
+          "info": "#3ABFF8",
+          "success": "#36D399",
+          "warning": "#FBBD23",
+          "error": "#F87272",
         },
       },
     ],
   },
-  darkMode: ['class', '["dark"]'],
+  darkMode: ['class', '[data-theme="dark"]'],
 }
 
 export default config

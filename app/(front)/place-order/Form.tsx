@@ -42,7 +42,7 @@ const Form = () => {
       const data = await res.json()
       if (res.ok) {
         clear()
-        toast.success('is strong i have not done it 😞😞🙁☹ !')
+        toast.success('Order placed successfully!')
         return router.push(`/order/${data.order._id}`)
       } else {
         toast.error(data.message)
@@ -69,69 +69,69 @@ const Form = () => {
   if (!mounted) return <></>
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-6 bg-gray-50">
       <CheckoutSteps current={4} />
-      <div className="grid md:grid-cols-4 md:gap-5 my-6">
+      <div className="grid md:grid-cols-4 gap-6 my-6">
         {/* Shipping Address Card */}
-        <div className="card bg-base-200 shadow-md p-4 md:col-span-3">
-          <h2 className="text-lg font-semibold mb-2">Shipping Address</h2>
-          <p>{shippingAddress.fullName}</p>
-          <p>
+        <div className="card bg-white shadow-lg rounded-lg p-6 md:col-span-3">
+          <h2 className="text-lg font-bold mb-4 text-gray-700">Shipping Address</h2>
+          <p className="text-gray-600">{shippingAddress.fullName}</p>
+          <p className="text-gray-600">
             {shippingAddress.address}, {shippingAddress.city},{' '}
-            {shippingAddress.postalCode}, {shippingAddress.country}{' '}
+            {shippingAddress.postalCode}, {shippingAddress.country}
           </p>
-          <div className="mt-2">
-            <Link className="btn btn-primary" href="/shipping">
+          <div className="mt-4">
+            <Link className="btn btn-outline btn-primary" href="/shipping">
               Edit
             </Link>
           </div>
         </div>
 
         {/* Payment Method Card */}
-        <div className="card bg-base-200 shadow-md p-4 mt-4">
-          <h2 className="text-lg font-semibold mb-2">Payment Method</h2>
-          <p>{paymentMethod}</p>
-          <div className="mt-2">
-            <Link className="btn btn-primary" href="/payment">
+        <div className="card bg-white shadow-lg rounded-lg p-6">
+          <h2 className="text-lg font-bold mb-4 text-gray-700">Payment Method</h2>
+          <p className="text-gray-600">{paymentMethod}</p>
+          <div className="mt-4">
+            <Link className="btn btn-outline btn-primary" href="/payment">
               Edit
             </Link>
           </div>
         </div>
 
         {/* Order Items */}
-        <div className="card bg-base-200 shadow-md p-4 mt-4">
-          <h2 className="text-lg font-semibold mb-2">Order Items</h2>
-          <table className="table w-full">
+        <div className="card bg-white shadow-lg rounded-lg p-6">
+          <h2 className="text-lg font-bold mb-4 text-gray-700">Order Items</h2>
+          <table className="table-auto w-full text-left border-collapse">
             <thead>
-              <tr>
-                <th className="text-left">Item</th>
-                <th className="text-center">Quantity</th>
-                <th className="text-right">Price</th>
+              <tr className="border-b">
+                <th className="py-2 text-gray-600">Item</th>
+                <th className="py-2 text-gray-600 text-center">Quantity</th>
+                <th className="py-2 text-gray-600 text-right">Price</th>
               </tr>
             </thead>
             <tbody>
               {items.map((item) => (
-                <tr key={item.slug}>
-                  <td className="flex items-center">
+                <tr key={item.slug} className="border-b">
+                  <td className="py-3 flex items-center space-x-4">
                     <Image
                       src={item.image}
                       alt={item.name}
                       width={50}
                       height={50}
-                      className="object-cover rounded-md mr-2"
+                      className="object-cover rounded-md"
                     />
-                    <Link href={`/product/${item.slug}`}>
+                    <Link className="text-blue-600 hover:underline" href={`/product/${item.slug}`}>
                       {item.name} ({item.color} {item.size})
                     </Link>
                   </td>
-                  <td className="text-center">{item.qty}</td>
-                  <td className="text-right">${item.price.toFixed(2)}</td>
+                  <td className="py-3 text-center text-gray-600">{item.qty}</td>
+                  <td className="py-3 text-right text-gray-600">${item.price.toFixed(2)}</td>
                 </tr>
               ))}
             </tbody>
           </table>
-          <div className="mt-4">
-            <Link className="btn btn-primary" href="/cart">
+          <div className="mt-6">
+            <Link className="btn btn-outline btn-primary w-full" href="/cart">
               Edit
             </Link>
           </div>
@@ -139,28 +139,28 @@ const Form = () => {
       </div>
 
       {/* Order Summary */}
-      <div className="card bg-base-200 shadow-md p-4">
-        <h2 className="text-lg font-semibold mb-2">Order Summary</h2>
-        <ul className="space-y-3">
-          <li className="flex justify-between">
+      <div className="card bg-white shadow-lg rounded-lg p-6">
+        <h2 className="text-lg font-bold mb-4 text-gray-700">Order Summary</h2>
+        <ul className="space-y-4">
+          <li className="flex justify-between text-gray-600">
             <span>Items</span>
             <span>${itemsPrice.toFixed(2)}</span>
           </li>
-          <li className="flex justify-between">
+          <li className="flex justify-between text-gray-600">
             <span>Tax</span>
             <span>${taxPrice.toFixed(2)}</span>
           </li>
-          <li className="flex justify-between">
+          <li className="flex justify-between text-gray-600">
             <span>Shipping</span>
             <span>${shippingPrice.toFixed(2)}</span>
           </li>
-          <li className="flex justify-between font-semibold">
+          <li className="flex justify-between font-semibold text-gray-800">
             <span>Total</span>
             <span>${totalPrice.toFixed(2)}</span>
           </li>
           <li>
             <button
-              className="btn btn-primary w-full mt-4"
+              className="btn btn-primary w-full mt-6 py-2 text-lg"
               disabled={isPlacing}
               onClick={() => placeOrder()}
             >

@@ -10,12 +10,13 @@ const Form = () => {
   const { savePayementMethod, paymentMethod, shippingAddress } =
     useCartService()
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState('')
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     await savePayementMethod(selectedPaymentMethod)
     router.push('/place-order')
   }
- 
+
   useEffect(() => {
     if (!shippingAddress) {
       router.push('/shipping')
@@ -24,39 +25,48 @@ const Form = () => {
   }, [paymentMethod, shippingAddress, router])
 
   return (
-    <div>
+    <div className="container mx-auto px-4">
       <CheckoutSteps current={2} />
-      <h1 className="max-w-sm mx-auto card bg-base-300 my-4"></h1>
-      <form onSubmit={handleSubmit}>
-        {['Paypal', 'stripe', 'CashOnDelibery'].map((payment) => (
-          <div key={payment}>
-            <label className="label cursor-pointer">
-              <span className="label-text">{payment}</span>
-              <input
-                type="radio"
-                name="paymentMethod"
-                className="radio"
-                value={payment}
-                checked={selectedPaymentMethod === payment}
-                onChange={() => setSelectedPaymentMethod(payment)}
-              />
-            </label>
-          </div>
-        ))}
-          <div className="my-2">
-                 <button type="submit" className="btn btn-primary w-full">
-                   Next
-                 </button>
-               </div>
-               <div className="my-2">
-                 <button
-                   type="button"
-                   className="btn w-full my-2"
-                   onClick={() => router.back()}
-                 >
-                   Back
-                 </button>
-               </div>
+      <h1 className="text-2xl font-bold text-center my-6">Select Payment Method</h1>
+      <form
+        onSubmit={handleSubmit}
+        className="max-w-lg mx-auto bg-base-200 shadow-md p-6 rounded-lg"
+      >
+        <div className="space-y-4">
+          {['Paypal', 'Stripe', 'Cash On Delivery'].map((payment) => (
+            <div
+              key={payment}
+              className="flex items-center justify-between p-3 bg-base-300 rounded-lg"
+            >
+              <label className="flex items-center w-full cursor-pointer">
+                <input
+                  type="radio"
+                  name="paymentMethod"
+                  className="radio radio-primary mr-3"
+                  value={payment}
+                  checked={selectedPaymentMethod === payment}
+                  onChange={() => setSelectedPaymentMethod(payment)}
+                />
+                <span className="label-text text-lg">{payment}</span>
+              </label>
+            </div>
+          ))}
+        </div>
+
+        <div className="mt-6">
+          <button type="submit" className="btn btn-primary w-full">
+            Next
+          </button>
+        </div>
+        <div className="mt-4">
+          <button
+            type="button"
+            className="btn btn-outline w-full"
+            onClick={() => router.back()}
+          >
+            Back
+          </button>
+        </div>
       </form>
     </div>
   )

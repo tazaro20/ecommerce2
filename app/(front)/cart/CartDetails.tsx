@@ -18,74 +18,84 @@ export default function CartDetails() {
     return <></>
   }
   return (
-    <>
-      <h1 className="py-4 text-2xl">Shopping Cart</h1>
+    <div className="container mx-auto py-8">
+      <h1 className="text-3xl font-bold mb-6">Shopping Cart</h1>
       {items.length === 0 ? (
-        <div>
-          Cart is empty. <Link href={'/'}>Go shopping</Link>
+        <div className="text-center text-gray-500">
+          Your cart is empty.{' '}
+          <Link href={'/'} className="text-blue-500 underline">
+            Go shopping
+          </Link>
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-1 md:grid-cols-4 md:gap-4">
-          <div className="overflow-x-auto md:col-span-3">
-            <table className="table table-auto w-full text-center items-center">
-              <thead>
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-4">
+          {/* Cart Items */}
+          <div className="md:col-span-3">
+            <table className="table-auto w-full border-collapse border border-gray-300 text-center">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th>Product</th>
-                  <th>Quantity</th>
-                  <th>Price</th>
+                  <th className="p-4 border-b">Product</th>
+                  <th className="p-4 border-b">Quantity</th>
+                  <th className="p-4 border-b">Price</th>
                 </tr>
               </thead>
               <tbody>
                 {items.map((item) => (
-                  <tr key={item.name}>
-                    <td>
-                      <Link href={`/product/${item.slug}`}>
+                  <tr key={item.name} className="hover:bg-gray-50">
+                    <td className="p-4 flex items-center space-x-4">
+                      <Link href={`/product/${item.slug}`} className="flex items-center">
                         <Image
                           src={item.image}
                           alt={item.name}
                           width={50}
                           height={50}
+                          className="rounded"
                         />
                         <span className="px-2">{item.name}</span>
                       </Link>
                     </td>
-                    <td>
-                      <button
-                        className="btn btn-outline-danger"
-                        onClick={() => decrease(item)}
-                      >
-                        -
-                      </button>
-                      <span className="px-2">{item.qty}</span>
-                      <button
-                        className="btn btn-outline-success"
-                        onClick={() => increase(item)}
-                      >
-                        +
-                      </button>
+                    <td className="p-4">
+                      <div className="flex items-center justify-center space-x-2">
+                        <button
+                          className="btn btn-xs btn-outline btn-error"
+                          onClick={() => decrease(item)}
+                        >
+                          -
+                        </button>
+                        <span className="px-2 font-semibold">{item.qty}</span>
+                        <button
+                          className="btn btn-xs btn-outline btn-success"
+                          onClick={() => increase(item)}
+                        >
+                          +
+                        </button>
+                      </div>
                     </td>
-                    <td>${item.price * item.qty}</td>
+                    <td className="p-4 text-gray-700 font-semibold">
+                      ${item.price * item.qty}
+                    </td>
                   </tr>
                 ))}
               </tbody>
             </table>
           </div>
+
+          {/* Order Summary */}
           <div>
-            <div className="card bg-base-300">
-              <div className="card-body">
+            <div className="card bg-gray-50 border border-gray-200 shadow-md">
+              <div className="card-body p-6">
+                <h2 className="text-xl font-bold mb-4">Order Summary</h2>
                 <ul>
-                  <li>
-                    <div className="pb-3 text-xl">
-                      subtotal({items.reduce((a, c) => a + c.qty, 0)}) :
-                      ${itemsPrice}
-                    </div>
+                  <li className="flex justify-between pb-3 text-lg">
+                    <span>Subtotal</span>
+                    <span>${itemsPrice}</span>
                   </li>
-                  <li>
+                  <li className="pt-4">
                     <button
-                    onClick={() => router.push('/shipping')}
-                    className="btn btn-primary w-full"
+                      onClick={() => router.push('/shipping')}
+                      className="btn btn-primary w-full"
                     >
-                        Proceed to checkout
+                      Proceed to Checkout
                     </button>
                   </li>
                 </ul>
@@ -94,6 +104,6 @@ export default function CartDetails() {
           </div>
         </div>
       )}
-    </>
+    </div>
   )
 }

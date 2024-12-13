@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 import { useSession } from 'next-auth/react'
 import Link from 'next/link'
@@ -62,7 +60,9 @@ const Form = () => {
         const data = await res.json()
         throw new Error(data.message)
       }
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
       const error =
         err.message && err.message.indexOf('E11000') === 0
           ? 'Email already exists'
@@ -72,12 +72,12 @@ const Form = () => {
   }
 
   return (
-    <div className="max-w-sm mx-auto card bg-base-300 my-4">
-      <div className="card-body">
-        <h1 className="card-title text-xl text-center">Register</h1>
-        <form onSubmit={handleSubmit(formSubmit)}>
-          <div className="my-2">
-            <label className="label" htmlFor="name">
+    <div className="max-w-lg mx-auto my-10 card bg-base-100 shadow-md border border-gray-200">
+      <div className="card-body p-6">
+        <h1 className="card-title text-xl font-semibold text-gray-800 text-center">Register</h1>
+        <form onSubmit={handleSubmit(formSubmit)} className="space-y-4">
+          <div>
+            <label className="label font-medium text-gray-700" htmlFor="name">
               Name
             </label>
             <input
@@ -86,14 +86,14 @@ const Form = () => {
               {...register('name', {
                 required: 'Name is required',
               })}
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full focus:outline-none focus:ring focus:ring-primary-300"
             />
             {errors.name?.message && (
-              <div className="text-error">{errors.name.message}</div>
+              <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
             )}
           </div>
-          <div className="my-2">
-            <label className="label" htmlFor="email">
+          <div>
+            <label className="label font-medium text-gray-700" htmlFor="email">
               Email
             </label>
             <input
@@ -101,16 +101,19 @@ const Form = () => {
               id="email"
               {...register('email', {
                 required: 'Email is required',
-                pattern: /^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$/,
+                pattern: {
+                  value: /^[\w-]+(\.[\w-]+)*@[\w-]+\.[a-zA-Z]{2,7}$/,
+                  message: 'Enter a valid email address',
+                },
               })}
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full focus:outline-none focus:ring focus:ring-primary-300"
             />
             {errors.email?.message && (
-              <div className="text-error">{errors.email.message}</div>
+              <p className="text-sm text-red-500 mt-1">{errors.email.message}</p>
             )}
           </div>
-          <div className="my-2">
-            <label className="label" htmlFor="password">
+          <div>
+            <label className="label font-medium text-gray-700" htmlFor="password">
               Password
             </label>
             <input
@@ -120,17 +123,17 @@ const Form = () => {
                 required: 'Password is required',
                 minLength: {
                   value: 6,
-                  message: 'Password must be at least 8 characters long',
+                  message: 'Password must be at least 6 characters long',
                 },
               })}
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full focus:outline-none focus:ring focus:ring-primary-300"
             />
             {errors.password?.message && (
-              <div className="text-error">{errors.password.message}</div>
+              <p className="text-sm text-red-500 mt-1">{errors.password.message}</p>
             )}
           </div>
-          <div className="my-2">
-            <label className="label" htmlFor="confirmPassword">
+          <div>
+            <label className="label font-medium text-gray-700" htmlFor="confirmPassword">
               Confirm Password
             </label>
             <input
@@ -140,24 +143,22 @@ const Form = () => {
                 required: 'Confirm Password is required',
                 validate: (value) => value === getValues('password'),
               })}
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full focus:outline-none focus:ring focus:ring-primary-300"
             />
             {errors.confirmPassword?.type === 'validate' && (
-              <div className="text-error">Passwords do not match</div>
+              <p className="text-sm text-red-500 mt-1">Passwords do not match</p>
             )}
           </div>
-          <div className="my-2">
-            <button
-              type="submit"
-              className="btn btn-primary w-full"
-              disabled={isSubmitting}
-            >
-              Register
-            </button>
+          <button
+            type="submit"
+            className="btn btn-primary w-full py-2 text-lg font-semibold"
+            disabled={isSubmitting}
+          >
             {isSubmitting && (
-              <div className="loading loading-spinner spinner-border text-primary"></div>
+              <span className="loading loading-spinner mr-2"></span>
             )}
-          </div>
+            Register
+          </button>
         </form>
         <div className="divider"></div>
         <div>

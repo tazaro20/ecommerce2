@@ -8,6 +8,7 @@ import Link from 'next/link'
 import toast from 'react-hot-toast'
 import useSWR from 'swr'
 import useSWRMutation from 'swr/mutation'
+
 export default function OrderDetails({
   orderId,
   paypalClientId,
@@ -25,17 +26,16 @@ export default function OrderDetails({
         },
       })
       const data = await res.json()
-   if (res.ok) {
-    toast.success('Order delivered successfully')
-    
-   }else {
-    toast.error(data.message)
-   }
+      if (res.ok) {
+        toast.success('Order delivered successfully')
+      } else {
+        toast.error(data.message)
+      }
     }
   )
 
   const { data: session } = useSession()
-  console.log(session)
+
   function createPayPalOrder() {
     return fetch(`/api/orders/${orderId}/create-paypal-order`, {
       method: 'POST',
@@ -57,7 +57,7 @@ export default function OrderDetails({
       body: JSON.stringify(data),
     })
       .then((response) => response.json())
-      .then((_orderData) => {  
+      .then((_orderData) => {
         toast.success('Order paid successfully')
       })
   }
@@ -82,137 +82,122 @@ export default function OrderDetails({
   } = data
 
   return (
-    <div>
-      <h1 className="text-2xl py-4">Order {orderId}</h1>
-      <div className="grid md:grid-cols-4 md:gap-5 my-4">
-        <div className="md:col-span-3">
-          <div className="card bg-base-300">
-            <div className="card-body">
-              <h2 className="card-title">Shipping Address</h2>
-              <p>{shippingAddress.fullName}</p>
-              <p>
-                {shippingAddress.address}, {shippingAddress.city},{' '}
-                {shippingAddress.postalCode}, {shippingAddress.country}{' '}
-              </p>
-              {isDelivered ? (
-                <div className="text-success">Delivered at {deliveredAt}</div>
-              ) : (
-                <div className="text-error">Not Delivered</div>
-              )}
-            </div>
+    <div className="container mx-auto py-6 px-4">
+      <h1 className="text-3xl font-bold mb-6">Order {orderId}</h1>
+      <div className="grid md:grid-cols-4 gap-6">
+        {/* Left Section */}
+        <div className="md:col-span-3 space-y-6">
+          {/* Shipping Address */}
+          <div className="card bg-gray-100 p-4 shadow-lg">
+            <h2 className="text-xl font-semibold mb-2">Shipping Address</h2>
+            <p>{shippingAddress.fullName}</p>
+            <p>
+              {shippingAddress.address}, {shippingAddress.city},{' '}
+              {shippingAddress.postalCode}, {shippingAddress.country}
+            </p>
+            {isDelivered ? (
+              <div className="mt-3 text-green-600 font-medium">
+                Delivered at {deliveredAt}
+              </div>
+            ) : (
+              <div className="mt-3 text-red-600 font-medium">
+                Not Delivered
+              </div>
+            )}
           </div>
 
-          <div className="card bg-base-300 mt-4">
-            <div className="card-body">
-              <h2 className="card-title">Payment Method</h2>
-              <p>{paymentMethod}</p>
-              {isPaid ? (
-                <div className="text-success">Paid at {paidAt}</div>
-              ) : (
-                <div className="text-error">Not Paid</div>
-              )}
-            </div>
+          {/* Payment Method */}
+          <div className="card bg-gray-100 p-4 shadow-lg">
+            <h2 className="text-xl font-semibold mb-2">Payment Method</h2>
+            <p>{paymentMethod}</p>
+            {isPaid ? (
+              <div className="mt-3 text-green-600 font-medium">Paid at {paidAt}</div>
+            ) : (
+              <div className="mt-3 text-red-600 font-medium">Not Paid</div>
+            )}
           </div>
 
-          <div className="card bg-base-300 mt-4">
-            <div className="card-body">
-              <h2 className="card-title">Items</h2>
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
+          {/* Items */}
+          <div className="card bg-gray-100 p-4 shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Items</h2>
+            <table className="table-auto w-full border-collapse">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="p-2 border-b">Item</th>
+                  <th className="p-2 border-b">Quantity</th>
+                  <th className="p-2 border-b">Price</th>
+                </tr>
+              </thead>
+              <tbody>
+                {items.map((item: OrderItem) => (
+                  <tr key={item.slug} className="hover:bg-gray-50">
+                    <td className="p-2 flex items-center space-x-4">
+                      <Link href={`/product/${item.slug}`}>
+                        <Image
+                          src={item.image}
+                          alt={item.name}
+                          width={50}
+                          height={50}
+                          className="rounded"
+                        />
+                      </Link>
+                      <span>{item.name}</span>
+                    </td>
+                    <td className="p-2 text-center">{item.qty}</td>
+                    <td className="p-2 text-center">${item.price}</td>
                   </tr>
-                </thead>
-                <tbody>
-                  {items.map((item: OrderItem) => (
-                    <tr key={item.slug}>
-                      <td>
-                        <Link
-                          href={`/product/${item.slug}`}
-                          className="flex items-center"
-                        >
-                          <Image
-                            src={item.image}
-                            alt={item.name}
-                            width={50}
-                            height={50}
-                          ></Image>
-                          <span className="px-2">
-                            {item.name} ({item.color} {item.size})
-                          </span>
-                        </Link>
-                      </td>
-                      <td>{item.qty}</td>
-                      <td>${item.price}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
 
+        {/* Right Section */}
         <div>
-          <div className="card bg-base-300">
-            <div className="card-body">
-              <h2 className="card-title">Order Summary</h2>
-              <ul>
+          <div className="card bg-gray-100 p-4 shadow-lg">
+            <h2 className="text-xl font-semibold mb-4">Order Summary</h2>
+            <ul className="space-y-4">
+              <li className="flex justify-between">
+                <span>Items</span>
+                <span>${itemsPrice}</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Tax</span>
+                <span>${taxPrice}</span>
+              </li>
+              <li className="flex justify-between">
+                <span>Shipping</span>
+                <span>${shippingPrice}</span>
+              </li>
+              <li className="flex justify-between font-bold text-lg">
+                <span>Total</span>
+                <span>${totalPrice}</span>
+              </li>
+              {!isPaid && paymentMethod === 'PayPal' && (
                 <li>
-                  <div className="mb-2 flex justify-between">
-                    <div>Items</div>
-                    <div>${itemsPrice}</div>
-                  </div>
+                  <PayPalScriptProvider options={{ clientId: paypalClientId }}>
+                    <PayPalButtons
+                      createOrder={createPayPalOrder}
+                      onApprove={onApprovePayPalOrder}
+                    />
+                  </PayPalScriptProvider>
                 </li>
+              )}
+              {session?.user?.isAdmin && (
                 <li>
-                  <div className="mb-2 flex justify-between">
-                    <div>Tax</div>
-                    <div>${taxPrice}</div>
-                  </div>
+                  <button
+                    className="btn bg-blue-500 hover:bg-blue-600 text-white w-full"
+                    onClick={() => deliverOrder()}
+                    disabled={isDelivering}
+                  >
+                    {isDelivering && (
+                      <span className="loading loading-spinner mr-2"></span>
+                    )}
+                    Mark as Delivered
+                  </button>
                 </li>
-                <li>
-                  <div className="mb-2 flex justify-between">
-                    <div>Shipping</div>
-                    <div>${shippingPrice}</div>
-                  </div>
-                </li>
-                <li>
-                  <div className="mb-2 flex justify-between">
-                    <div>Total</div>
-                    <div>${totalPrice}</div>
-                  </div>
-                </li>
-
-                {!isPaid && paymentMethod === 'PayPal' && (
-                  <li>
-                    <PayPalScriptProvider
-                      options={{ clientId: paypalClientId }}
-                    >
-                      <PayPalButtons
-                        createOrder={createPayPalOrder}
-                        onApprove={onApprovePayPalOrder}
-                      />
-                    </PayPalScriptProvider>
-                  </li>
-                )}
-                {session?.user?.isAdmin && (
-                  <li>
-                    <button
-                      className="btn w-full my-2"
-                      onClick={() => deliverOrder()}
-                      disabled={isDelivering}
-                    >
-                      {isDelivering && (
-                        <span className="loading loading-spinner"></span>
-                      )}
-                      Mark as delivered
-                    </button>
-                  </li>
-                )}
-
-              </ul>
-            </div>
+              )}
+            </ul>
           </div>
         </div>
       </div>

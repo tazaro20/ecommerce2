@@ -67,7 +67,7 @@ const Form = () => {
         const data = await res.json()
         toast.error(data.message || 'error')
       }
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       const error =
         err.response && err.response.data && err.response.data.message
@@ -77,12 +77,14 @@ const Form = () => {
     }
   }
   return (
-    <div className="max-w-sm  mx-auto card bg-base-300 my-4">
-      <div className="card-body">
-        <h1 className="card-title">Profile</h1>
-        <form onSubmit={handleSubmit(formSubmit)}>
-          <div className="my-2">
-            <label className="label" htmlFor="name">
+    <div className="max-w-lg mx-auto my-10 card bg-base-100 shadow-md border border-gray-200">
+      <div className="card-body p-6">
+        <h1 className="card-title text-xl font-semibold text-gray-800">
+          Update Profile
+        </h1>
+        <form onSubmit={handleSubmit(formSubmit)} className="space-y-4">
+          <div>
+            <label className="label font-medium text-gray-700" htmlFor="name">
               Name
             </label>
             <input
@@ -91,48 +93,58 @@ const Form = () => {
               {...register('name', {
                 required: 'Name is required',
               })}
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full focus:outline-none focus:ring focus:ring-primary-300"
             />
             {errors.name?.message && (
-              <div className="text-error">{errors.name.message}</div>
+              <p className="text-sm text-red-500 mt-1">{errors.name.message}</p>
             )}
           </div>
-          <div className="my-2">
-            <label className="label" htmlFor="email">
+          <div>
+            <label className="label font-medium text-gray-700" htmlFor="email">
               Email
             </label>
             <input
-              type="text"
+              type="email"
               id="email"
               {...register('email', {
                 required: 'Email is required',
                 pattern: {
                   value: /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/,
-                  message: 'Email is invalid',
+                  message: 'Enter a valid email address',
                 },
               })}
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full focus:outline-none focus:ring focus:ring-primary-300"
             />
             {errors.email?.message && (
-              <div className="text-error">{errors.email.message}</div>
+              <p className="text-sm text-red-500 mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
-          <div className="my-2">
-            <label className="label" htmlFor="password">
+          <div>
+            <label
+              className="label font-medium text-gray-700"
+              htmlFor="password"
+            >
               New Password
             </label>
             <input
               type="password"
               id="password"
-              {...register('password', {})}
-              className="input input-bordered w-full max-w-sm"
+              {...register('password')}
+              className="input input-bordered w-full focus:outline-none focus:ring focus:ring-primary-300"
             />
             {errors.password?.message && (
-              <div className="text-error">{errors.password.message}</div>
+              <p className="text-sm text-red-500 mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
-          <div className="my-2">
-            <label className="label" htmlFor="confirmPassword">
+          <div>
+            <label
+              className="label font-medium text-gray-700"
+              htmlFor="confirmPassword"
+            >
               Confirm New Password
             </label>
             <input
@@ -141,29 +153,27 @@ const Form = () => {
               {...register('confirmPassword', {
                 validate: (value) => {
                   const { password } = getValues()
-                  return password === value || 'Passwords should match!'
+                  return password === value || 'Passwords must match'
                 },
               })}
-              className="input input-bordered w-full max-w-sm"
+              className="input input-bordered w-full focus:outline-none focus:ring focus:ring-primary-300"
             />
             {errors.confirmPassword?.message && (
-              <div className="text-error">
+              <p className="text-sm text-red-500 mt-1">
                 {errors.confirmPassword.message}
-              </div>
+              </p>
             )}
           </div>
-          <div className="my-2">
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="btn btn-primary w-full"
-            >
-              {isSubmitting && (
-                <span className="loading loading-spinner"></span>
-              )}
-              Update
-            </button>
-          </div>
+          <button
+            type="submit"
+            disabled={isSubmitting}
+            className="btn btn-primary w-full py-2 text-lg font-semibold"
+          >
+            {isSubmitting && (
+              <span className="loading loading-spinner mr-2"></span>
+            )}
+            Update Profile
+          </button>
         </form>
       </div>
     </div>
