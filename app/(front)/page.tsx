@@ -7,7 +7,7 @@ import Link from 'next/link'
 import '../styles.css'
 
 export const metadata: Metadata = {
-  title: process.env.NEXT_PUBLIC_APP_NAME || 'Next Amazona V2',
+  title: process.env.NEXT_PUBLIC_APP_NAME || 'ecommerce-2',
   description:
     process.env.NEXT_PUBLIC_APP_DESC ||
     'Nextjs, Server components, Next auth, daisyui, zustand',
